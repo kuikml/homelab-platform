@@ -63,7 +63,7 @@ source "proxmox-iso" "ubuntu" {
         "e<wait>",
         "<down><down><down><end>",
         "<bs><bs><bs><bs><wait>",
-        " autoinstall quiet ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <wait>",
+        " autoinstall quiet ip=dhcp ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <wait>",
         "---<wait>",
         "<f10>"  
         
