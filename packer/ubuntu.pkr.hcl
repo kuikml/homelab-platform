@@ -58,15 +58,16 @@ source "proxmox-iso" "ubuntu" {
     http_directory = "http"
 
     boot_wait = "5s"
+    boot_key_interval = "50ms"
     boot_command = [
         "<esc><wait>",
         "e<wait>",
         "<down><down><down><end>",
+        # Czyścimy cztery ostatnie znaki (w 22.04 to zazwyczaj były trzy kreski)
         "<bs><bs><bs><bs><wait>",
-        " autoinstall quiet ip=dhcp ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <wait>",
-        "---<wait>",
-        "<f10>"  
-        
+        # Klasyczna, legendarna składnia dla Ubuntu 22.04:
+        " autoinstall quiet --- ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <enter>",
+        "<f10>"
     ]
  
 }
