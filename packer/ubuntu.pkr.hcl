@@ -59,10 +59,10 @@ source "proxmox-iso" "ubuntu" {
 
     ssh_handshake_attempts = "100"
 
-    shutdown_command = "echo 'SuperTajneHasloDoMojegoPackeraUUU123@' | sudo -S poweroff"
+    ssh_shutdown_command = "echo 'SuperTajneHasloDoMojegoPackeraUUU123@' | sudo -S poweroff"
     
-    template_extension = "true"
-    
+    make_template = "true"
+
     http_directory = "http"
 
     boot_wait = "5s"
