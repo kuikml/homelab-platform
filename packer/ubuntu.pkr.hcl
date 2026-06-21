@@ -56,12 +56,7 @@ source "proxmox-iso" "ubuntu" {
     ssh_username = "ubuntu"
     ssh_password = "SuperTajneHasloDoMojegoPackeraUUU123@"
     ssh_timeout  = "20m"
-
     ssh_handshake_attempts = "100"
-
-    ssh_shutdown_command = "echo 'SuperTajneHasloDoMojegoPackeraUUU123@' | sudo -S poweroff"
-    
-    make_template = "true"
 
     http_directory = "http"
 
@@ -85,7 +80,8 @@ build {
         inline = [
             "sudo apt-get update",
             "sudo apt-get install -y qemu-guest-agent",
-            "sudo systemctl enable qemu-guest-agent"
+            "sudo systemctl enable qemu-guest-agent",
+            "sudo poweroff"
         ]
     }
 }
