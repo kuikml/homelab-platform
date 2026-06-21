@@ -27,7 +27,7 @@ source "proxmox-iso" "ubuntu" {
 
     node                     = "proxmox"
     vm_id                    = 9000
-    vm_name                  = "ubuntu-24.04-template"
+    vm_name                  = "ubuntu-22.04-template"
     template_description     = "First template from Packer"
 
     iso_file = "local:iso/ubuntu-22.04.5-live-server-amd64.iso"
@@ -39,6 +39,8 @@ source "proxmox-iso" "ubuntu" {
     cores      = 2
     memory     = 2048
     scsi_controller = "virtio-scsi-pci"
+
+    qemu_agent = true
 
     disks {
         disk_size       = "20G"
@@ -54,6 +56,12 @@ source "proxmox-iso" "ubuntu" {
     ssh_username = "ubuntu"
     ssh_password = "SuperTajneHasloDoMojegoPackeraUUU123@"
     ssh_timeout  = "20m"
+
+    ssh_handshake_attempts = "100"
+
+    shutdown_command = "echo 'SuperTajneHasloDoMojegoPackeraUUU123@' | sudo -S poweroff"
+    
+    template_extension = "true"
     
     http_directory = "http"
 
