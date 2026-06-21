@@ -63,10 +63,8 @@ source "proxmox-iso" "ubuntu" {
         "<esc><wait>",
         "e<wait>",
         "<down><down><down><end>",
-        # Czyścimy cztery ostatnie znaki (w 22.04 to zazwyczaj były trzy kreski)
         "<bs><bs><bs><bs><wait>",
-        # Klasyczna, legendarna składnia dla Ubuntu 22.04:
-        " autoinstall quiet --- ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <enter>",
+        " autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<enter>",
         "<f10>"
     ]
  
