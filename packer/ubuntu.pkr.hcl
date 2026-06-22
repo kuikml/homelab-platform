@@ -76,11 +76,35 @@ source "proxmox-iso" "ubuntu" {
 build {
     sources = ["source.proxmox-iso.ubuntu"]
 
+    # 1. Czyszczenie systemu (Sanitization)
     provisioner "shell" {
         inline = [
-            "sudo apt-get update",
-            "sudo apt-get install -y qemu-guest-agent",
+            "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
+            "sudo apt-get update && sudo apt-get install -y qemu-guest-agent",
             "sudo systemctl enable qemu-guest-agent",
+            "sudo rm /etc/ssh/ssh_host_*",
+            "sudo truncate -s 0 /etc/machine-id",
+            "sudo apt -y autoremove --purge",
+            "sudo apt -y clean",
+            "sudo apt -y autoclean",
+            "sudo cloud-init clean",
+            "sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg",
+            "sudo rm -f /etc/netplan/00-installer-config.yaml",
+            "sudo sync"
+        ]
+    }
+
+    # 2. Wrzuconko pliku konfiguracyjnego dla PVE
+    provisioner "file" {
+        source      = "files/00-pve.cfg"
+        destination = "/tmp/00-pve.cfg"
+    }
+
+    # 3. Przeniesienie pliku i... AUTOMATYCZNY POWEROFF NA KONIEC!
+    provisioner "shell" {
+        inline = [ 
+            "sudo cp /tmp/00-pve.cfg /etc/cloud/cloud.cfg.d/00-pve.cfg",
+            # Ostatni zgasi światło i wywoła magię automatycznego szablonu w Proxmoxie:
             "sudo poweroff"
         ]
     }
