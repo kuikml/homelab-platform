@@ -11,9 +11,20 @@ autoinstall:
   ssh:
     install-server: true
     allow-pw: true
+    authorized-keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSsB0vmqGpBesSVBPXvgPZ9ZbDcbuY18mDXfv9EBdAD root@packer-runner
+  packages:
+    - qemu-guest-agent
+    - cloud-init
   storage:
     layout:
       name: direct
+  user-data:
+    users:
+      - name: ubuntu
+        groups: sudo
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
   late-commands:
-    - curtin in-target --target=/target -- systemctl enable ssh
-  #  - curtin in-target --target=/target -- systemctl enable qemu-guest-agent
+    - systemctl enable qemu-guest-agent
+    - echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /target/etc/sudoers.d/ubuntu

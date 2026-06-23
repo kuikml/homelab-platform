@@ -55,9 +55,11 @@ source "proxmox-iso" "ubuntu" {
     }
 
     ssh_username = "ubuntu"
-    ssh_password = "SuperTajneHasloDoMojegoPackeraUUU123@"
+    ssh_private_key_file = "~/.ssh/packer_key"
     ssh_timeout  = "20m"
-    ssh_handshake_attempts = "100"
+    ssh_handshake_attempts = 20
+    ssh_pty                = true
+
 
     http_directory = "http"
 
