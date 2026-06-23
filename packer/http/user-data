@@ -16,4 +16,4 @@ autoinstall:
       name: direct
   late-commands:
     - curtin in-target --target=/target -- systemctl enable ssh
-    - curtin in-target --target=/target -- systemctl enable qemu-guest-agent
+  #  - curtin in-target --target=/target -- systemctl enable qemu-guest-agent
