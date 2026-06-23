@@ -42,7 +42,6 @@ source "proxmox-iso" "ubuntu" {
 
     qemu_agent = true
 
-    shutdown_command = "sudo poweroff"
 
     disks {
         disk_size       = "20G"
@@ -104,8 +103,10 @@ build {
 
     # 3. Przeniesienie pliku i... AUTOMATYCZNY POWEROFF NA KONIEC!
     provisioner "shell" {
+        expect_disconnect = true
         inline = [ 
-            "sudo cp /tmp/00-pve.cfg /etc/cloud/cloud.cfg.d/00-pve.cfg"
+            "sudo cp /tmp/00-pve.cfg /etc/cloud/cloud.cfg.d/00-pve.cfg",
+            "sudo poweroff"
         ]
     }
 }
