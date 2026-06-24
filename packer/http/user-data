@@ -33,3 +33,6 @@ autoinstall:
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSsB0vmqGpBesSVBPXvgPZ9ZbDcbuY18mDXfv9EBdAD root@packer-runner"
   late-commands:
     - echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /target/etc/sudoers.d/ubuntu
+    - chmod 440 /target/etc/sudoers.d/ubuntu
+    - curtin in-target --target=/target -- apt-get install -y qemu-guest-agent cloud-init sudo
+    - curtin in-target --target=/target -- systemctl enable qemu-guest-agent
