@@ -11,20 +11,25 @@ autoinstall:
   ssh:
     install-server: true
     allow-pw: true
-    authorized-keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSsB0vmqGpBesSVBPXvgPZ9ZbDcbuY18mDXfv9EBdAD root@packer-runner
+    disable_root: false
+    ssh_quiet_keygen: true
+    allow_public_ssh_keys: true
+    #authorized-keys:
+    #  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSsB0vmqGpBesSVBPXvgPZ9ZbDcbuY18mDXfv9EBdAD root@packer-runner"
   packages:
     - qemu-guest-agent
     - cloud-init
+    - sudo
   storage:
     layout:
       name: direct
   user-data:
     users:
       - name: ubuntu
-        groups: sudo
+        groups: [sudo]
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
+        ssh_autorized_keys:
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSsB0vmqGpBesSVBPXvgPZ9ZbDcbuY18mDXfv9EBdAD root@packer-runner"
   late-commands:
-    - systemctl enable qemu-guest-agent
     - echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /target/etc/sudoers.d/ubuntu

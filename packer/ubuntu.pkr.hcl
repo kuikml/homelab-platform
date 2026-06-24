@@ -46,13 +46,17 @@ source "proxmox-iso" "ubuntu" {
     disks {
         disk_size       = "20G"
         storage_pool    = "local-zfs"
-        type            = "scsi"
+        type            = "virtio"
     }
 
     network_adapters {
         bridge = "vmbr0"
         model  = "virtio"
+        firewall = "false"
     }
+
+    cloud_init = true
+    cloud_init_storage_pool = "local-lvm"
 
     ssh_username = "ubuntu"
     ssh_private_key_file = "~/.ssh/packer_key"
@@ -105,10 +109,8 @@ build {
 
     # 3. Przeniesienie pliku i... AUTOMATYCZNY POWEROFF NA KONIEC!
     provisioner "shell" {
-        expect_disconnect = true
         inline = [ 
             "sudo cp /tmp/00-pve.cfg /etc/cloud/cloud.cfg.d/00-pve.cfg",
-            "sudo poweroff"
         ]
     }
 }
