@@ -14,8 +14,8 @@ autoinstall:
     disable_root: false
     ssh_quiet_keygen: true
     allow_public_ssh_keys: true
-    #authorized-keys:
-    #  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSsB0vmqGpBesSVBPXvgPZ9ZbDcbuY18mDXfv9EBdAD root@packer-runner"
+    authorized-keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSsB0vmqGpBesSVBPXvgPZ9ZbDcbuY18mDXfv9EBdAD root@packer-runner"
   packages:
     - qemu-guest-agent
     - cloud-init
@@ -29,7 +29,7 @@ autoinstall:
         groups: [sudo]
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
-        ssh_autorized_keys:
+        ssh_authorized_keys:
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSsB0vmqGpBesSVBPXvgPZ9ZbDcbuY18mDXfv9EBdAD root@packer-runner"
   late-commands:
     - echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /target/etc/sudoers.d/ubuntu
