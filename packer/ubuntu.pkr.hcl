@@ -56,7 +56,6 @@ source "proxmox-iso" "ubuntu" {
     }
 
     cloud_init = true
-    cloud_init_storage_pool = "local-lvm"
 
     ssh_username = "ubuntu"
     ssh_private_key_file = "~/.ssh/packer_key"
