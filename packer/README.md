@@ -10,3 +10,6 @@ packer init .
 packer validate -var-file="credentials.pkrvars.hcl" .
 
 packer build -var-file="credentials.pkrvars.hcl" .
+
+### DEBUG packer
+PACKER_LOG=1 packer build -var-file="credentials.pkrvars.hcl" -debug .
