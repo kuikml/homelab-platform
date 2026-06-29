@@ -8,9 +8,11 @@ resource "proxmox_vm_qemu" "k3s_nodes" {
   full_clone = true
 
   cores  = 2
-  memory = 4096
+  memory = 1500
   agent = 1
 
+  boot = "order=scsi0;ide3;net0"
+  bootdisk = "scsi0"
   disks {
     scsi {
         scsi0 {
@@ -20,10 +22,17 @@ resource "proxmox_vm_qemu" "k3s_nodes" {
             }
         }
     }
+    ide {
+      ide3 {
+        cloudinit {
+          storage = "local-zfs"
+        }
+      }
+    }
   }
 
   network {
-    id = 0
+    id    = 0
     model = "virtio"
     bridge = "vmbr0"
   }
@@ -43,7 +52,7 @@ resource "proxmox_vm_qemu" "vpn_node" {
   full_clone = true
 
   cores  = 1
-  memory = 1024
+  memory = 512
   agent = 1
 
   disks {
@@ -55,10 +64,18 @@ resource "proxmox_vm_qemu" "vpn_node" {
             }
         }
     }
+
+    ide {
+      ide3 {
+        cloudinit {
+          storage = "local-zfs"
+        }
+      }
+    }
   }
 
   network {
-    id = 0
+    id    = 0 
     model = "virtio"
     bridge = "vmbr0"
   }
