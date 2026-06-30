@@ -11,11 +11,11 @@ resource "proxmox_vm_qemu" "k3s_nodes" {
   memory = 1500
   agent = 1
 
-  boot = "order=scsi0;ide3;net0"
-  bootdisk = "scsi0"
+  boot = "order=virtio0"
+   bootdisk = "virtio0"
   disks {
-    scsi {
-        scsi0 {
+    virtio {
+        virtio0 {
             disk {
                 size = "30G"
                 storage = "local-zfs"
@@ -23,11 +23,11 @@ resource "proxmox_vm_qemu" "k3s_nodes" {
         }
     }
     ide {
-      ide3 {
-        cloudinit {
-          storage = "local-zfs"
+        ide3 {
+            cloudinit {
+                storage = "local-zfs"
+            }
         }
-      }
     }
   }
 
@@ -38,7 +38,7 @@ resource "proxmox_vm_qemu" "k3s_nodes" {
   }
 
   os_type = "cloud-init"
-  ipconfig0 = "ip=192.168.1.${count.index + 151}/24,gw=192.168.1.1,routes=10.0.0.0/16:192.168.1.160"
+  ipconfig0 = "ip=192.168.1.${count.index + 151}/24,gw=192.168.1.1"
   #routes - trasa statyczna do VPC w AWS poprzez tunel VPN StrongSwan (192.168.1.160)
   sshkeys = var.ssh_public_key
 }
@@ -52,25 +52,26 @@ resource "proxmox_vm_qemu" "vpn_node" {
   full_clone = true
 
   cores  = 1
-  memory = 512
+  memory = 1024
   agent = 1
 
+  boot = "order=virtio0"
+  bootdisk = "virtio0"
   disks {
-    scsi {
-        scsi0 {
+    virtio {
+        virtio0 {
             disk {
-                size = "15G"
+                size = "30G"
                 storage = "local-zfs"
             }
         }
     }
-
     ide {
-      ide3 {
-        cloudinit {
-          storage = "local-zfs"
+        ide3 {
+            cloudinit {
+                storage = "local-zfs"
+            }
         }
-      }
     }
   }
 
