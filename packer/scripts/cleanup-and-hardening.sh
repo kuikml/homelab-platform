@@ -32,7 +32,7 @@ echo "=== 6. Cleaning up ==="
 sudo rm -rf /tmp/*
 sudo rm -rf /var/tmp/*
 sudo journalctl --vacuum-time=1d
-find /var/log -type f -name "*.log" -exec sudo truncate -s 0 {} \;
+sudo find /var/log -type f -name "*.log" -exec sudo truncate -s 0 {} \;
 sudo rm -f /etc/ssh/ssh_host_*
 sudo truncate -s 0 /etc/machine-id
 sudo apt-get -y autoremove --purge
