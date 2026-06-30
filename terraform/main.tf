@@ -32,7 +32,7 @@ resource "proxmox_vm_qemu" "k3s_nodes" {
   }
 
   network {
-    id    = 0
+    id = 0
     model = "virtio"
     bridge = "vmbr0"
   }
@@ -76,7 +76,7 @@ resource "proxmox_vm_qemu" "vpn_node" {
   }
 
   network {
-    id    = 0 
+    id = 0
     model = "virtio"
     bridge = "vmbr0"
   }
@@ -119,7 +119,7 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
   }
 
   network {
-    id    = 0 
+    id = 0
     model = "virtio"
     bridge = "vmbr0"
   }
