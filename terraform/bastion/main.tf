@@ -59,7 +59,7 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
       "echo '=== 2. Installing Ansible ==='",
       "sudo apt-add-repository --yes --update ppa:ansible/ansible",
       "sudo apt install -y ansible",
-      "sudo ansible-galaxy collection install cloud.terraform",
+      "ansible-galaxy collection install cloud.terraform --force",
 
       "echo '=== 3. Installing Terraform and Packer ==='",
       "wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg",

@@ -1,0 +1,20 @@
+---
+plugin: cloud.terraform.terraform_provider
+project_path: "../terraform"
+
+# Zamiast parsować klucze Jinją, zmuszamy wtyczkę do przeczytania outputu jako słownika
+output_format: dict
+
+# Pobieramy hosty prosto ze struktury zasobów w stanie, wskazując bezpośrednio na nasz output
+hostnames: "outputs.platform_nodes.value"
+
+compose:
+  ansible_host: "ip"
+  node_role: "role"
+  node_blueprint: "blueprint"
+
+keyed_groups:
+  - key: node_role
+    prefix: role
+  - key: node_blueprint
+    prefix: blueprint

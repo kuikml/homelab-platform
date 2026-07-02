@@ -1,87 +1,18 @@
 {
   "version": 4,
   "terraform_version": "1.15.7",
-  "serial": 147,
+  "serial": 140,
   "lineage": "2cc93bde-7c3e-db36-3a95-d6c457742ce2",
-  "outputs": {
-    "platform_nodes": {
-      "value": {
-        "k3s-master": {
-          "blueprint": "kubernetes",
-          "ip": "192.168.1.151",
-          "name": "k3s-master-01",
-          "role": "master"
-        },
-        "k3s-worker-01": {
-          "blueprint": "kubernetes",
-          "ip": "192.168.1.152",
-          "name": "k3s-worker-01",
-          "role": "worker"
-        },
-        "k3s-worker-02": {
-          "blueprint": "kubernetes",
-          "ip": "192.168.1.153",
-          "name": "k3s-worker-02",
-          "role": "worker"
-        },
-        "vpn-gateway": {
-          "blueprint": "gateway",
-          "ip": "192.168.1.160",
-          "name": "vpn-strongswan",
-          "role": "vpn"
-        }
-      },
-      "type": [
-        "object",
-        {
-          "k3s-master": [
-            "object",
-            {
-              "blueprint": "string",
-              "ip": "string",
-              "name": "string",
-              "role": "string"
-            }
-          ],
-          "k3s-worker-01": [
-            "object",
-            {
-              "blueprint": "string",
-              "ip": "string",
-              "name": "string",
-              "role": "string"
-            }
-          ],
-          "k3s-worker-02": [
-            "object",
-            {
-              "blueprint": "string",
-              "ip": "string",
-              "name": "string",
-              "role": "string"
-            }
-          ],
-          "vpn-gateway": [
-            "object",
-            {
-              "blueprint": "string",
-              "ip": "string",
-              "name": "string",
-              "role": "string"
-            }
-          ]
-        }
-      ]
-    }
-  },
+  "outputs": {},
   "resources": [
     {
       "mode": "managed",
       "type": "proxmox_vm_qemu",
-      "name": "k3s_master",
+      "name": "k3s_nodes",
       "provider": "provider[\"registry.terraform.io/telmate/proxmox\"]",
       "instances": [
         {
+          "index_key": 1,
           "schema_version": 0,
           "attributes": {
             "additional_wait": 5,
@@ -105,7 +36,7 @@
             "cpu": [],
             "cpu_type": "host",
             "current_node": "proxmox",
-            "default_ipv4_address": "192.168.1.151",
+            "default_ipv4_address": "",
             "default_ipv6_address": "",
             "define_connection_info": true,
             "desc": null,
@@ -200,237 +131,6 @@
             "hostpci": [],
             "hotplug": "network,disk,usb",
             "id": "proxmox/qemu/301",
-            "ipconfig0": "ip=192.168.1.151/24,gw=192.168.1.1",
-            "ipconfig1": null,
-            "ipconfig10": null,
-            "ipconfig11": null,
-            "ipconfig12": null,
-            "ipconfig13": null,
-            "ipconfig14": null,
-            "ipconfig15": null,
-            "ipconfig2": null,
-            "ipconfig3": null,
-            "ipconfig4": null,
-            "ipconfig5": null,
-            "ipconfig6": null,
-            "ipconfig7": null,
-            "ipconfig8": null,
-            "ipconfig9": null,
-            "kvm": true,
-            "linked_vmid": 0,
-            "machine": "",
-            "memory": 2048,
-            "name": "k3s-master-01",
-            "nameserver": null,
-            "network": [
-              {
-                "bridge": "vmbr0",
-                "firewall": false,
-                "id": 0,
-                "link_down": false,
-                "macaddr": "bc:24:11:f1:13:af",
-                "model": "virtio",
-                "mtu": 0,
-                "queues": 0,
-                "rate": 0,
-                "tag": 0
-              }
-            ],
-            "numa": false,
-            "onboot": false,
-            "os_network_config": null,
-            "os_type": "cloud-init",
-            "pci": [],
-            "pcis": [],
-            "pool": "",
-            "protection": false,
-            "pxe": null,
-            "qemu_os": "other",
-            "reboot_required": false,
-            "rng": [],
-            "scsihw": "lsi",
-            "searchdomain": null,
-            "serial": [],
-            "skip_ipv4": false,
-            "skip_ipv6": false,
-            "smbios": [
-              {
-                "family": "",
-                "manufacturer": "",
-                "product": "",
-                "serial": "",
-                "sku": "",
-                "uuid": "2d16dcaf-ed59-4a3a-b892-1a77a1ac5d73",
-                "version": ""
-              }
-            ],
-            "sockets": 1,
-            "ssh_forward_ip": null,
-            "ssh_host": "192.168.1.151",
-            "ssh_port": "22",
-            "ssh_private_key": null,
-            "ssh_user": null,
-            "sshkeys": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqvYtvy2E9WW7EDCgLmZrF611nDov+KjFTt+GSRne5Q ansible-bastion\n",
-            "startup": "",
-            "tablet": true,
-            "tags": " ",
-            "target_node": "proxmox",
-            "target_nodes": null,
-            "timeouts": null,
-            "tpm_state": [],
-            "unused_disk": [],
-            "usb": [],
-            "usbs": [],
-            "vcpus": null,
-            "vga": [],
-            "vm_state": "running",
-            "vmid": 301
-          },
-          "sensitive_attributes": [
-            [
-              {
-                "type": "get_attr",
-                "value": "cipassword"
-              }
-            ],
-            [
-              {
-                "type": "get_attr",
-                "value": "ssh_private_key"
-              }
-            ]
-          ],
-          "identity_schema_version": 0,
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWZhdWx0IjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19"
-        }
-      ]
-    },
-    {
-      "mode": "managed",
-      "type": "proxmox_vm_qemu",
-      "name": "k3s_workers",
-      "provider": "provider[\"registry.terraform.io/telmate/proxmox\"]",
-      "instances": [
-        {
-          "index_key": 0,
-          "schema_version": 0,
-          "attributes": {
-            "additional_wait": 5,
-            "agent": 1,
-            "agent_timeout": 90,
-            "args": "",
-            "automatic_reboot": true,
-            "balloon": 0,
-            "bios": "seabios",
-            "boot": "order=virtio0",
-            "bootdisk": "",
-            "ci_wait": null,
-            "cicustom": null,
-            "cipassword": "",
-            "ciupgrade": false,
-            "ciuser": "",
-            "clone": "ubuntu-22.04-template",
-            "clone_id": null,
-            "clone_wait": 10,
-            "cores": 2,
-            "cpu": [],
-            "cpu_type": "host",
-            "current_node": "proxmox",
-            "default_ipv4_address": "192.168.1.152",
-            "default_ipv6_address": "",
-            "define_connection_info": true,
-            "desc": null,
-            "description": "Managed by Terraform.",
-            "disk": [],
-            "disks": [
-              {
-                "ide": [
-                  {
-                    "ide0": [],
-                    "ide1": [],
-                    "ide2": [],
-                    "ide3": [
-                      {
-                        "cdrom": [],
-                        "cloudinit": [
-                          {
-                            "storage": "local-zfs"
-                          }
-                        ],
-                        "disk": [],
-                        "ignore": false,
-                        "passthrough": []
-                      }
-                    ]
-                  }
-                ],
-                "sata": [],
-                "scsi": [],
-                "virtio": [
-                  {
-                    "virtio0": [
-                      {
-                        "cdrom": [],
-                        "disk": [
-                          {
-                            "asyncio": "",
-                            "backup": true,
-                            "cache": "",
-                            "discard": false,
-                            "format": "raw",
-                            "id": 0,
-                            "iops_r_burst": 0,
-                            "iops_r_burst_length": 0,
-                            "iops_r_concurrent": 0,
-                            "iops_wr_burst": 0,
-                            "iops_wr_burst_length": 0,
-                            "iops_wr_concurrent": 0,
-                            "iothread": false,
-                            "linked_disk_id": -1,
-                            "mbps_r_burst": 0,
-                            "mbps_r_concurrent": 0,
-                            "mbps_wr_burst": 0,
-                            "mbps_wr_concurrent": 0,
-                            "readonly": false,
-                            "replicate": false,
-                            "serial": "",
-                            "size": "30G",
-                            "storage": "local-zfs",
-                            "wwn": ""
-                          }
-                        ],
-                        "ignore": false,
-                        "passthrough": []
-                      }
-                    ],
-                    "virtio1": [],
-                    "virtio10": [],
-                    "virtio11": [],
-                    "virtio12": [],
-                    "virtio13": [],
-                    "virtio14": [],
-                    "virtio15": [],
-                    "virtio2": [],
-                    "virtio3": [],
-                    "virtio4": [],
-                    "virtio5": [],
-                    "virtio6": [],
-                    "virtio7": [],
-                    "virtio8": [],
-                    "virtio9": []
-                  }
-                ]
-              }
-            ],
-            "efidisk": [],
-            "force_create": false,
-            "force_recreate_on_change_of": null,
-            "full_clone": true,
-            "hagroup": "",
-            "hastate": "",
-            "hostpci": [],
-            "hotplug": "network,disk,usb",
-            "id": "proxmox/qemu/304",
             "ipconfig0": "ip=192.168.1.152/24,gw=192.168.1.1",
             "ipconfig1": null,
             "ipconfig10": null,
@@ -450,8 +150,8 @@
             "kvm": true,
             "linked_vmid": 0,
             "machine": "",
-            "memory": 2048,
-            "name": "k3s-worker-01",
+            "memory": 1500,
+            "name": "k3s-node-02",
             "nameserver": null,
             "network": [
               {
@@ -459,7 +159,7 @@
                 "firewall": false,
                 "id": 0,
                 "link_down": false,
-                "macaddr": "bc:24:11:ee:66:64",
+                "macaddr": "bc:24:11:b1:52:7f",
                 "model": "virtio",
                 "mtu": 0,
                 "queues": 0,
@@ -491,17 +191,17 @@
                 "product": "",
                 "serial": "",
                 "sku": "",
-                "uuid": "cc9f993c-0858-40b5-9028-c91fbd0e128f",
+                "uuid": "9beb43aa-58d5-437f-b370-9d8d5898a652",
                 "version": ""
               }
             ],
             "sockets": 1,
             "ssh_forward_ip": null,
-            "ssh_host": "192.168.1.152",
-            "ssh_port": "22",
+            "ssh_host": "",
+            "ssh_port": "",
             "ssh_private_key": null,
             "ssh_user": null,
-            "sshkeys": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqvYtvy2E9WW7EDCgLmZrF611nDov+KjFTt+GSRne5Q ansible-bastion\n",
+            "sshkeys": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAvRUX7swfqNsrnrS5EsAJfHOF76dJ2js6rYl+2Q0RzY operator@LAPTOP-S90QCIBO\n",
             "startup": "",
             "tablet": true,
             "tags": " ",
@@ -514,8 +214,8 @@
             "usbs": [],
             "vcpus": null,
             "vga": [],
-            "vm_state": "running",
-            "vmid": 304
+            "vm_state": "stopped",
+            "vmid": 301
           },
           "sensitive_attributes": [
             [
@@ -535,7 +235,7 @@
           "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWZhdWx0IjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19"
         },
         {
-          "index_key": 1,
+          "index_key": 2,
           "schema_version": 0,
           "attributes": {
             "additional_wait": 5,
@@ -559,7 +259,7 @@
             "cpu": [],
             "cpu_type": "host",
             "current_node": "proxmox",
-            "default_ipv4_address": "192.168.1.153",
+            "default_ipv4_address": "",
             "default_ipv6_address": "",
             "define_connection_info": true,
             "desc": null,
@@ -653,7 +353,7 @@
             "hastate": "",
             "hostpci": [],
             "hotplug": "network,disk,usb",
-            "id": "proxmox/qemu/305",
+            "id": "proxmox/qemu/302",
             "ipconfig0": "ip=192.168.1.153/24,gw=192.168.1.1",
             "ipconfig1": null,
             "ipconfig10": null,
@@ -673,8 +373,8 @@
             "kvm": true,
             "linked_vmid": 0,
             "machine": "",
-            "memory": 2048,
-            "name": "k3s-worker-02",
+            "memory": 1500,
+            "name": "k3s-node-03",
             "nameserver": null,
             "network": [
               {
@@ -682,7 +382,7 @@
                 "firewall": false,
                 "id": 0,
                 "link_down": false,
-                "macaddr": "bc:24:11:14:ba:53",
+                "macaddr": "bc:24:11:40:5a:ce",
                 "model": "virtio",
                 "mtu": 0,
                 "queues": 0,
@@ -714,17 +414,17 @@
                 "product": "",
                 "serial": "",
                 "sku": "",
-                "uuid": "ef30efa9-541d-4c71-8b20-193dcf92c155",
+                "uuid": "aa86b255-c423-445f-8206-d4cde8239f4e",
                 "version": ""
               }
             ],
             "sockets": 1,
             "ssh_forward_ip": null,
-            "ssh_host": "192.168.1.153",
-            "ssh_port": "22",
+            "ssh_host": "",
+            "ssh_port": "",
             "ssh_private_key": null,
             "ssh_user": null,
-            "sshkeys": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqvYtvy2E9WW7EDCgLmZrF611nDov+KjFTt+GSRne5Q ansible-bastion\n",
+            "sshkeys": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAvRUX7swfqNsrnrS5EsAJfHOF76dJ2js6rYl+2Q0RzY operator@LAPTOP-S90QCIBO\n",
             "startup": "",
             "tablet": true,
             "tags": " ",
@@ -737,8 +437,8 @@
             "usbs": [],
             "vcpus": null,
             "vga": [],
-            "vm_state": "running",
-            "vmid": 305
+            "vm_state": "stopped",
+            "vmid": 302
           },
           "sensitive_attributes": [
             [
@@ -954,7 +654,7 @@
             "ssh_port": "22",
             "ssh_private_key": null,
             "ssh_user": null,
-            "sshkeys": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqvYtvy2E9WW7EDCgLmZrF611nDov+KjFTt+GSRne5Q ansible-bastion\n",
+            "sshkeys": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAvRUX7swfqNsrnrS5EsAJfHOF76dJ2js6rYl+2Q0RzY operator@LAPTOP-S90QCIBO\n",
             "startup": "",
             "tablet": true,
             "tags": " ",
