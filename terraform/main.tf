@@ -39,6 +39,7 @@ resource "proxmox_vm_qemu" "k3s_master" {
   os_type = "cloud-init"
   ipconfig0 = "ip=192.168.1.151/24,gw=192.168.1.1"
   sshkeys = var.ssh_public_key
+  
 }
 
 resource "proxmox_vm_qemu" "k3s_workers" {
@@ -126,4 +127,49 @@ resource "proxmox_vm_qemu" "vpn_node" {
   os_type = "cloud-init"
   ipconfig0 = "ip=192.168.1.160/24,gw=192.168.1.1"
   sshkeys = var.ssh_public_key
+}
+
+
+# ======================================
+# MAPPING HOSTS TO ANSIBLE INVENTORY
+# ======================================
+
+# 1. Master node
+resource "ansible_host" "k3s_master" {
+  name = proxmox_vm_qemu.k3s_master.name
+  groups = ["master", "kubernetes"]
+
+  variables = {
+    ansible_host = split("/", split("ip=", proxmox_vm_qemu.k3s_master.ipconfig0)[1])[0]
+    ansible_user = "ubuntu"
+    node_role = "master"
+    node_blueprint = "kubernetes"
+  }
+}
+
+# 2. Worker nodes
+resource "ansible_host" "k3s_worker" {
+  count = 2
+  name = proxmox_vm_qemu.k3s_workers[count.index].name
+  groups = ["worker", "kubernetes"]
+
+  variables = {
+    ansible_host = split("/", split("ip=", proxmox_vm_qemu.k3s_workers[count.index].ipconfig0)[1])[0]
+    ansible_user = "ubuntu"
+    node_role = "worker"
+    node_blueprint = "kubernetes"
+  }
+}
+
+# 3. VPN Gateway node
+resource "ansible_host" "vpn_node" {
+  name = proxmox_vm_qemu.vpn_node.name
+  groups = ["vpn"]
+
+  variables = {
+    ansible_host = split("/", split("ip=", proxmox_vm_qemu.vpn_node.ipconfig0)[1])[0]
+    ansible_user = "ubuntu"
+    node_role = "vpn"
+    node_blueprint = "gateway"
+  }
 }
