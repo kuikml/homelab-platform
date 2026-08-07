@@ -1,0 +1,5 @@
+---
+- name: Import K3s cluster playbook
+  ansible.builtin.import_playbook: k3s-ansible/playbooks/site.yml
+
+

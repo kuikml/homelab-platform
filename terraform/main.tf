@@ -137,7 +137,7 @@ resource "proxmox_vm_qemu" "vpn_node" {
 # 1. Master node
 resource "ansible_host" "k3s_master" {
   name = proxmox_vm_qemu.k3s_master.name
-  groups = ["master", "kubernetes"]
+  groups = ["server", "k3s_cluster", "kubernetes"]
 
   variables = {
     ansible_host = split("/", split("ip=", proxmox_vm_qemu.k3s_master.ipconfig0)[1])[0]
@@ -151,7 +151,7 @@ resource "ansible_host" "k3s_master" {
 resource "ansible_host" "k3s_worker" {
   count = 2
   name = proxmox_vm_qemu.k3s_workers[count.index].name
-  groups = ["worker", "kubernetes"]
+  groups = ["agent", "k3s_cluster", "kubernetes"]
 
   variables = {
     ansible_host = split("/", split("ip=", proxmox_vm_qemu.k3s_workers[count.index].ipconfig0)[1])[0]

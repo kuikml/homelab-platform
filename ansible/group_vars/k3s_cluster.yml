@@ -1,0 +1,9 @@
+---
+ansible_user: ubuntu
+
+k3s_version: "v1.30.2+k3s1"
+
+k3s_control_node_address: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
+
+extra_server_args: "--disable=traefik"
+extra_agent_args: ""
