@@ -7,7 +7,7 @@ resource "proxmox_vm_qemu" "k3s_master" {
   full_clone = true
 
   cores  = 2
-  memory = 2048
+  memory = 4096
   agent = 1
 
   boot = "order=virtio0"
@@ -52,7 +52,7 @@ resource "proxmox_vm_qemu" "k3s_workers" {
   full_clone = true
 
   cores  = 2
-  memory = 2048
+  memory = 4096
   agent = 1
 
   boot = "order=virtio0"
