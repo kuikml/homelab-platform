@@ -1,5 +1,25 @@
 ---
-- name: Import K3s cluster playbook
+- name: Map dynamic inventory group to K3s excpeted groups
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Add master to server & k3s_cluster group
+      ansible.builtin.group_by:
+        key: "{{ item }}"
+      when: "'master' in group_names"
+      loop:
+        - server
+        - k3s_cluster
+
+    - name: Add worker to server & k3s_cluster group
+      ansible.builtin.group_by:
+        key: "{{ item }}"
+      when: "'worker' in group_names"
+      loop:
+        - agent
+        - k3s_cluster
+
+- name: Deploy K3s cluster playbook
   ansible.builtin.import_playbook: k3s-ansible/playbooks/site.yml
 
 
