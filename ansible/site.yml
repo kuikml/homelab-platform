@@ -22,4 +22,29 @@
 - name: Deploy K3s cluster playbook
   ansible.builtin.import_playbook: k3s-ansible/playbooks/site.yml
 
+- name: Fetch kubeconfig to Bastion host
+  hosts: master
+  become: true
+  tasks:
+    - name: Fetch kubeconfig from master node
+      ansible.builtin.fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: "{{ lookup('env','HOME') }}/.kube/config"
+        flat: true
+    
+    - name: Replace 127.0.0.1 with master node IP in kubeconfig
+      delegate_to: localhost
+      become: false
+      ansible.builtin.replace:
+        path: "{{ lookup('env','HOME') }}/.kube/config"
+        regexp: '127\.0\.0\.1'
+        replace: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"
+
+    - name: Ensure correct permissions on kubeconfig
+      delegate_to: localhost
+      become: false
+      ansible.builtin.file:
+        path: "{{ lookup('env','HOME') }}/.kube/config"
+        mode: '0600'
+
 

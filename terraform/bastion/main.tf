@@ -81,6 +81,14 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
       "cd ~",
       "git clone https://github.com/kuikml/homelab-platform.git",
 
+      "echo '=== 6. Setting up GitHub-runner ==='",
+      "mkdir actions-runner && cd actions-runner",
+      "curl -o actions-runner-linux-x64-2.336.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.336.0/actions-runner-linux-x64-2.336.0.tar.gz",
+      "tar xzf ./actions-runner-linux-x64-2.336.0.tar.gz",
+      "./config.sh --url https://github.com/kuikml/homelab-platform --token ${var.github_runner_token} --unattended --name mgmt-bastion",
+      "sudo ./svc.sh install",
+      "sudo ./svc.sh start",
+
       "echo '=== Environment setup complete. You can now use Ansible, Terraform, Packer, and kubectl on this VM. ==='"
     ]
   }

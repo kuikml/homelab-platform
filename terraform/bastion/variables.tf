@@ -17,3 +17,9 @@ variable "ssh_public_key" {
   description = "SSH public key for the VM"
   type        = string
 }
+
+variable "github_runner_token" {
+  description = "GitHub runner registration token"
+  type        = string
+  sensitive   = true
+}
