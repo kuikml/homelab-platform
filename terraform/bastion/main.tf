@@ -7,7 +7,7 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
   full_clone = true
 
   cores  = 2
-  memory = 2048
+  memory = 4096
   agent = 1
 
   boot = "order=virtio0"
@@ -49,10 +49,13 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
 
   provisioner "remote-exec" {
     inline = [
-      "echo '=== 1. Updating system packages ==='",
-      "sudo apt update",
-      "sudo apt-get install -y software-properties-common git curl unzip python3-pip python3-venv wget gnupg2", 
+      "echo '=== 0. Disabling interactive prompts & needrestart ==='",
+      "sudo sed -i \"s/#\\$nrconf{restart} = 'i';/\\$nrconf{restart} = 'a';/g\" /etc/needrestart/needrestart.conf 2>/dev/null || true",
+      "export DEBIAN_FRONTEND=noninteractive",
 
+      "echo '=== 1. Updating system packages ==='",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get update",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common git curl unzip python3-pip python3-venv wget gnupg2",
       "echo '=== 2. Setting up ssh keys ==='",
       "if [ ! -f ~/.ssh/id_ed25519 ]; then ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519 -C 'ansible-bastion' -q; fi",
 
