@@ -1,0 +1,25 @@
+name: "IaC & Ansible Validation"
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate:
+    name: "Validate Terraform & Ansible"
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Terraform Init & Validate
+        run: |
+          cd terraform
+          terraform init -backend=false
+          terraform fmt -check
+          terraform validate
+
+      - name: Ansible Syntax Check
+        run: |
+          cd ansible
+          ansible-playbook -i inventories/ site.yml --syntax-check

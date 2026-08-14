@@ -1,0 +1,38 @@
+name: "Deploy Homelab Infrastructure & K3s"
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Przycisk "Run workflow" w panelu GitHub
+
+jobs:
+  deploy:
+    name: "Deploy Infrastructure & K3s"
+    runs-on: self-hosted
+
+    env:
+      PM_API_TOKEN_ID: ${{ secrets.PROXMOX_API_TOKEN_ID }}
+      PM_API_TOKEN_SECRET: ${{ secrets.PROXMOX_API_TOKEN_SECRET }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 1. Wdrożenie maszyn przez Terraforma
+      - name: Terraform Init & Apply
+        run: |
+          cd terraform
+          terraform init
+          terraform apply -auto-approve
+
+      # 2. Konfiguracja klastra przez Ansible
+      - name: Run Ansible Provisioning
+        run: |
+          cd ansible
+          ansible-playbook -i inventories/ site.yml
+
+      # 3. Test działania klastra K3s
+      - name: Check K3s Nodes Status
+        run: |
+          kubectl get nodes -o wide
+          kubectl get pods -A
