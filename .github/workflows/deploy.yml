@@ -13,6 +13,10 @@ jobs:
     env:
       PM_API_TOKEN_ID: ${{ secrets.PROXMOX_API_TOKEN_ID }}
       PM_API_TOKEN_SECRET: ${{ secrets.PROXMOX_API_TOKEN_SECRET }}
+      TF_VAR_pm_api_url: ${{ secrets.PROXMOX_API_URL }}
+      TF_VAR_pm_api_token_id: ${{ secrets.PROXMOX_API_TOKEN_ID }}
+      TF_VAR_pm_api_token_secret: ${{ secrets.PROXMOX_API_TOKEN_SECRET }}
+      TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
 
     steps:
       - name: Checkout Code

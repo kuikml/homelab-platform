@@ -83,6 +83,8 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
       "echo '=== 5. Cloning Repositories from GitHub ==='",
       "cd ~",
       "git clone https://github.com/kuikml/homelab-platform.git",
+      "git config --global user.email "${var.github_email}"",
+      "git config --global user.name "${var.github_name}",
 
       "echo '=== 6. Setting up GitHub-runner ==='",
       "mkdir actions-runner && cd actions-runner",
