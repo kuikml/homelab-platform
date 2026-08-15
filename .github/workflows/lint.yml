@@ -1,6 +1,6 @@
 name: "IaC & Ansible Validation"
 
-on:git
+on:
   pull_request:
     branches: [ "main" ]
 
