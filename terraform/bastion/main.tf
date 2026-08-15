@@ -1,51 +1,51 @@
 resource "proxmox_vm_qemu" "mgmt-bastion" {
-  name   = "mgmt-bastion"
+  name        = "mgmt-bastion"
   target_node = "proxmox"
-  vmid   = 333
+  vmid        = 333
 
-  clone  = "ubuntu-22.04-template"
+  clone      = "ubuntu-22.04-template"
   full_clone = true
 
   cores  = 2
   memory = 4096
-  agent = 1
+  agent  = 1
 
-  boot = "order=virtio0"
+  boot     = "order=virtio0"
   bootdisk = "virtio0"
   disks {
     virtio {
-        virtio0 {
-            disk {
-                size = "30G"
-                storage = "local-zfs"
-            }
+      virtio0 {
+        disk {
+          size    = "30G"
+          storage = "local-zfs"
         }
+      }
     }
     ide {
-        ide3 {
-            cloudinit {
-                storage = "local-zfs"
-            }
+      ide3 {
+        cloudinit {
+          storage = "local-zfs"
         }
+      }
     }
   }
 
   network {
-    id = 0
-    model = "virtio"
+    id     = 0
+    model  = "virtio"
     bridge = "vmbr0"
   }
 
-  os_type = "cloud-init"
+  os_type   = "cloud-init"
   ipconfig0 = "ip=192.168.1.166/24,gw=192.168.1.1"
-  sshkeys = var.ssh_public_key
+  sshkeys   = var.ssh_public_key
 
   connection {
     type        = "ssh"
     user        = "ubuntu"
     private_key = file("~/.ssh/id_ed25519")
     host        = "192.168.1.166"
-}
+  }
 
   provisioner "remote-exec" {
     inline = [
@@ -83,8 +83,8 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
       "echo '=== 5. Cloning Repositories from GitHub ==='",
       "cd ~",
       "git clone https://github.com/kuikml/homelab-platform.git",
-      "git config --global user.email "${var.github_email}"",
-      "git config --global user.name "${var.github_name}",
+      "git config --global user.email '${var.github_email}'",
+      "git config --global user.name '${var.github_name}'",
 
       "echo '=== 6. Setting up GitHub-runner ==='",
       "mkdir actions-runner && cd actions-runner",
