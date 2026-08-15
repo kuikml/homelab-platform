@@ -26,17 +26,25 @@
   hosts: master
   become: true
   tasks:
+    - name: Ensure ~/.kube directory exists on localhost
+      delegate_to: localhost
+      become: false
+      ansible.builtin.file:
+        path: /home/ubuntu/.kube
+        state: directory
+        mode: '0700'
+
     - name: Fetch kubeconfig from master node
       ansible.builtin.fetch:
         src: /etc/rancher/k3s/k3s.yaml
-        dest: "{{ lookup('env','HOME') }}/.kube/config"
+        dest: /home/ubuntu/.kube/config
         flat: true
     
     - name: Replace 127.0.0.1 with master node IP in kubeconfig
       delegate_to: localhost
       become: false
       ansible.builtin.replace:
-        path: "{{ lookup('env','HOME') }}/.kube/config"
+        path: /home/ubuntu/.kube/config
         regexp: '127\.0\.0\.1'
         replace: "{{ hostvars[groups['master'][0]]['ansible_host'] }}"
 
@@ -44,7 +52,7 @@
       delegate_to: localhost
       become: false
       ansible.builtin.file:
-        path: "{{ lookup('env','HOME') }}/.kube/config"
+        path: /home/ubuntu/.kube/config
         mode: '0600'
 
 
