@@ -27,6 +27,18 @@ jobs:
           terraform init
           terraform apply -auto-approve
 
+      - name: Wait for K3s nodes SSH to be ready
+        run: |
+          echo "Waiting for SSH to become available on all K3s nodes..."
+          for ip in 192.168.1.151 192.168.1.152 192.168.1.153; do
+            echo "Checking $ip..."
+            until nc -z -v -w5 $ip 22 2>/dev/null; do
+              echo "SSH on $ip not ready yet, retrying in 5 seconds..."
+              sleep 5
+            done
+            echo "SSH on $ip is READY!"
+          done
+
       # 2. Konfiguracja klastra przez Ansible
       - name: Run Ansible Provisioning
         run: |
