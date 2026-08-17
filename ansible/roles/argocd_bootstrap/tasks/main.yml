@@ -1,0 +1,26 @@
+---
+- name: Create argocd namespace
+  kubernetes.core.k8s:
+    name: argocd
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Apply Argo CD manifests
+  kubernetes.core.k8s:
+    state: present
+    src: https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    namespace: argocd
+
+- name: Wait for Argo CD server pod to be ready
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: argocd
+    label_selectors:
+      - app.kubernetes.io/name = argocd-server
+  register: argocd_server_pod
+  until: >
+    argocd_server_pod.resources | length > 0 and
+    (argocd_server_pod.resources[0].status.containerStatuses[0].ready | default(false))
+  retries: 30
+  delay: 10

@@ -54,5 +54,10 @@
       ansible.builtin.file:
         path: /home/ubuntu/.kube/config
         mode: '0600'
-
+        
+- name: Bootstrap Argo CD on K3s cluster
+  hosts: master
+  become: true
+  roles:
+    - argocd_bootstrap
 
