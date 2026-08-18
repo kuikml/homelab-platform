@@ -1,11 +1,11 @@
 ---
 - name: Ensure python3-kubernetes is installed on localhost
-  ansible.builtin.pip:
-    name: kubernetes
-    executable: pip3
-    extra_args: --break-system-packages
+  ansible.builtin.apt:
+    name: python3-kubernetes
+    state: present
+    update_cache: yes
   delegate_to: localhost
-  become: false
+  become: true
 
 - name: Create argocd namespace
   kubernetes.core.k8s:
