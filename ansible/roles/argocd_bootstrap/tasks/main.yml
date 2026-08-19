@@ -41,3 +41,12 @@
   delay: 10
   delegate_to: localhost
   become: false
+
+- name: Apply root Argo CD application
+  kubernetes.core.k8s:
+    state: present
+    src: https://raw.githubusercontent.com/kuikml/homelab-platform/main/gitops/root-app.yaml
+    namespace: argocd
+    kubeconfig: /home/ubuntu/.kube/config
+  delegate_to: localhost
+  become: false
