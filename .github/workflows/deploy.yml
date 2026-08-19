@@ -3,7 +3,12 @@ name: "Deploy Homelab Infrastructure & K3s"
 on:
   push:
     branches: [ "main" ]
+  paths:
+    - 'terraform/**'
+    - 'ansible/**'
+    - '.github/workflows/**'
   workflow_dispatch: # Przycisk "Run workflow" w panelu GitHub
+
 
 jobs:
   deploy:
