@@ -64,13 +64,16 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
       "sudo apt install -y ansible",
       "ansible-galaxy collection install cloud.terraform --force",
 
-      "echo '=== 3. Installing Terraform and Packer ==='",
+      "echo '=== 3. Installing AWS CLI ==='",
+      "sudo apt  install awscli -y",
+
+      "echo '=== 4. Installing Terraform and Packer ==='",
       "wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg",
       "echo \"deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/hashicorp.list",
       "sudo apt update",
       "sudo apt install -y terraform packer",
 
-      "echo '=== 4. Installing kubectl ==='",
+      "echo '=== 5. Installing kubectl ==='",
       "sudo apt-get install -y apt-transport-https ca-certificates curl gnupg",
       "sudo mkdir -p -m 755 /etc/apt/keyrings",
       "sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.36/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg",
@@ -80,13 +83,13 @@ resource "proxmox_vm_qemu" "mgmt-bastion" {
       "sudo apt update",
       "sudo apt install -y kubectl",
 
-      "echo '=== 5. Cloning Repositories from GitHub ==='",
+      "echo '=== 6. Cloning Repositories from GitHub ==='",
       "cd ~",
       "git clone https://github.com/kuikml/homelab-platform.git",
       "git config --global user.email '${var.github_email}'",
       "git config --global user.name '${var.github_name}'",
 
-      "echo '=== 6. Setting up GitHub-runner ==='",
+      "echo '=== 7. Setting up GitHub-runner ==='",
       "sudo apt-get install -y python3-netaddr",
       "mkdir actions-runner && cd actions-runner",
       "curl -o actions-runner-linux-x64-2.336.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.336.0/actions-runner-linux-x64-2.336.0.tar.gz",
