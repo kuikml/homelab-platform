@@ -23,3 +23,13 @@ variable "github_runner_token" {
   type        = string
   sensitive   = true
 }
+
+variable "github_email" {
+  type        = string
+  description = "GitHub email"
+}
+
+variable "github_name" {
+  type        = string
+  description = "GitHub name"
+}

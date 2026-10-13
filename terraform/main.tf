@@ -6,7 +6,7 @@ resource "proxmox_vm_qemu" "k3s_master" {
   clone      = "ubuntu-22.04-template"
   full_clone = true
 
-  cores  = 2
+  cpu {cores  = 2}
   memory = 4096
   agent  = 1
 
@@ -51,7 +51,7 @@ resource "proxmox_vm_qemu" "k3s_workers" {
   clone      = "ubuntu-22.04-template"
   full_clone = true
 
-  cores  = 2
+  cpu {cores  = 2}
   memory = 4096
   agent  = 1
 
@@ -87,15 +87,15 @@ resource "proxmox_vm_qemu" "k3s_workers" {
 }
 
 resource "proxmox_vm_qemu" "vpn_node" {
-  name        = "vpn-strongswan"
+  name        = "vpn-tailscale"
   target_node = "proxmox"
   vmid        = 311
 
   clone      = "ubuntu-22.04-template"
   full_clone = true
 
-  cores  = 1
-  memory = 1024
+  cpu {cores  = 1}
+  memory = 2048
   agent  = 1
 
   boot     = "order=virtio0"
@@ -127,6 +127,7 @@ resource "proxmox_vm_qemu" "vpn_node" {
   os_type   = "cloud-init"
   ipconfig0 = "ip=192.168.1.160/24,gw=192.168.1.1"
   sshkeys   = var.ssh_public_key
+
 }
 
 
