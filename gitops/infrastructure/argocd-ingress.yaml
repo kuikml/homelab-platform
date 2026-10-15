@@ -22,5 +22,5 @@ spec:
                   name: https
   tls:
     - hosts:
-        - argo.homelab.local
-        secretName: argocd-server-tls
+      - argo.homelab.local
+      secretName: argocd-server-tls
