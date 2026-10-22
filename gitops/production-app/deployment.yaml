@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-test-app
+  namespace: production-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+    app: db-test
+  template:
+    metadata:
+      labels:
+        app: db-test
+    spec:
+      containers:
+      - name: tester
+        image: postgres:alpine
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "Startowanie testu polaczenia z RDS..."
+            while true; do
+              export PGPASSWORD=$DB_PASSWORD
+              psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c "SELECT version();" && echo "SUKCES: Polaczono z baza!" || echo "BLAD: Brak polaczenia..."
+              sleep 10
+            done
+        env:
+        - name: DB_HOST
+          value: "homelab-postgres.cvuauyyoksw5.eu-central-1.rds.amazonaws.com"
+        - name: DB_USER
+          value: "postgres"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-db-secret 
+              key: DB_PASSWORD
