@@ -1,15 +1,3 @@
-resource "aws_secretsmanager_secret" "db_password" {
-  name = "homelab-rds-master-password-v1"
-}
-
-resource "aws_secretsmanager_secret_version" "db_password_val" {
-  secret_id     = aws_secretsmanager_secret.db_password.id
-  secret_string = jsonencode({
-    password = "${var.rds_password}" # You can replace this with a random password generator if needed, e.g., using the random_password resource
-    #random_password.db_password.result
-  })
-}
-
 resource "aws_db_subnet_group" "rds" {
   name = "homelab-rds-subnet-group"
   subnet_ids = [aws_subnet.private_1.id, aws_subnet.private_2.id]
