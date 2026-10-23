@@ -36,8 +36,7 @@ resource "aws_db_instance" "postgres" {
   max_allocated_storage  = 50
   db_name                = "homelabdb"
   username               = "postgres"
-  password               = "${var.rds_password}" # Use the password from Secrets Manager
-  # aws_secretsmanager_secret_version.db_password_val.secret_string["password"]
+  password               = "${var.rds_password}"
   db_subnet_group_name   = aws_db_subnet_group.rds.name
   vpc_security_group_ids = [aws_security_group.rds.id]
   skip_final_snapshot    = true

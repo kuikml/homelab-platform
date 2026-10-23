@@ -4,7 +4,6 @@ metadata:
   name: app-config
   namespace: production-app
 data:
-  DB_HOST: "homelab-postgres.c...eu-central-1.rds.amazonaws.com" # Podmień na faktyczny endpoint RDS po apply TF
-  DB_PORT: "5432"
+  DB_HOST: "homelab-postgres.cvuauyyoksw5.eu-central-1.rds.amazonaws.com"
   DB_NAME: "homelabdb"
   DB_USER: "postgres"
