@@ -39,10 +39,10 @@ Production-grade, hybrid Kubernetes infrastructure setup running on local Proxmo
 - [x] ArgoCD Core Installation & Application Bootstrap
 - [x] AWS Cloud Provisioning (VPC, SecretManager, S3, EC2, RDS)
 - [x] Tailscale - hybrid cloud tunnel AWS <-> Proxmox
-- [ ] Custom Workload Deployment with Sidecar Logging Pattern
-- [ ] NetworkPolicy Isolation & RBAC Setup
-- [ ] AWS Secrets Manager + External Secrets Operator Integration
-- [ ] Terraform IAM & RDS Automation Setup
+- [x] Custom Workload Deployment
+- [x] NetworkPolicy Isolation & RBAC Setup
+- [x] Terraform IAM & RDS Automation Setup
 - [ ] Full Observability Stack (Prometheus + Grafana + Loki)
 - [ ] Cloudflare Tunnel for Secure Ingress Exposure
+
 

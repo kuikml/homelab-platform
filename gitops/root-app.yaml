@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/kuikml/homelab-platform.git
     targetRevision: HEAD
-    path: gitops/bootstrap
+    path: bootstrap
     directory:
       recurse: false
   destination:
