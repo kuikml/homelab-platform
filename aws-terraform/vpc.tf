@@ -16,7 +16,7 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public_1" {
   vpc_id = aws_vpc.main.id
   cidr_block = "16.0.1.0/24"
   map_public_ip_on_launch = true
@@ -60,7 +60,23 @@ resource "aws_route_table" "public" {
   }
 }
 
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
+resource "aws_route_table_association" "public_1" {
+  subnet_id      = aws_subnet.public_1.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_subnet" "public_2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "16.0.2.0/24"
+  map_public_ip_on_launch = true
+  availability_zone       = "eu-central-1b"
+
+  tags = {
+    Name = "hybrid-homelab-public-2"
+  }
+}
+
+resource "aws_route_table_association" "public_2" {
+  subnet_id      = aws_subnet.public_2.id
   route_table_id = aws_route_table.public.id
 }
