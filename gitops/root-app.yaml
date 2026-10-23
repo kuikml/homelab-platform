@@ -8,9 +8,9 @@ spec:
   source:
     repoURL: https://github.com/kuikml/homelab-platform.git
     targetRevision: HEAD
-    path: bootstrap
+    path: gitops/bootstrap
     directory:
-      recurse: false
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
