@@ -8,3 +8,9 @@ resources:
   - service.yaml
   - gateway-httproute.yaml
   - networkpolicy.yaml
+  - externalsecret.yaml
+
+configMapGenerator:
+  - name: aws-rds-ca-cert
+    files:
+      - global-bundle.pem

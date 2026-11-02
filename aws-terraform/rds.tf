@@ -1,3 +1,8 @@
+resource "random_password" "rds_password" {
+  length  = 32
+  special = false
+}
+
 resource "aws_db_subnet_group" "rds" {
   name = "homelab-rds-subnet-group"
   subnet_ids = [aws_subnet.private_1.id, aws_subnet.private_2.id]
@@ -37,7 +42,7 @@ resource "aws_db_instance" "postgres" {
   max_allocated_storage  = 50
   db_name                = "homelabdb"
   username               = "postgres"
-  password               = "${var.rds_password}"
+  password               = random_password.rds_password.result
   db_subnet_group_name   = aws_db_subnet_group.rds.name
   vpc_security_group_ids = [aws_security_group.rds.id]
   skip_final_snapshot    = true
@@ -45,4 +50,20 @@ resource "aws_db_instance" "postgres" {
   tags = {
     Name = "homelab-rds-instance"
   }
+}
+
+resource "aws_secretsmanager_secret" "rds_credentials" {
+  name = "homelab/postgres/credentials"
+}
+
+resource "aws_secretsmanager_secret_version" "rds_credentials_val" {
+  secret_id = aws_secretsmanager_secret.rds_credentials.id
+  secret_string = jsonencode({
+    engine   = "postgres"
+    host     = aws_db_instance.postgres.address
+    port     = aws_db_instance.postgres.port
+    dbname   = aws_db_instance.postgres.db_name
+    username = aws_db_instance.postgres.username
+    password = random_password.rds_password.result
+  })
 }

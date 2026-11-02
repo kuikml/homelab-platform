@@ -14,46 +14,54 @@ spec:
         app: db-test
     spec:
       containers:
-      - name: tester
-        image: postgres:alpine
-        command: ["sh", "-c"]
-        args:
-          - |
-            echo "Pobieranie certyfikatu RDS CA..."
-            wget -q https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem -O /tmp/global-bundle.pem
-            
-            echo "Startowanie testu polaczenia z RDS..."
-            while true; do
+        - name: tester
+          image: postgres:alpine
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "Rozpoczynanie testu polaczenia z RDS..."
               export PGPASSWORD=$DB_PASSWORD
-              # Używamy pełnego połączenia z szyfrowaniem wymaganym przez AWS
-              psql "host=$DB_HOST port=${DB_PORT:-5432} dbname=$DB_NAME user=$DB_USER sslmode=verify-full sslrootcert=/tmp/global-bundle.pem" -c "SELECT version();" \
-                && echo "SUKCES: Polaczono z baza!" \
-                || echo "BLAD: Brak polaczenia..."
-              sleep 10
-            done
-        env:
-          - name: DB_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: app-config
-                key: DB_HOST
-          - name: DB_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: app-config
-                key: DB_PORT
-          - name: DB_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: app-config
-                key: DB_NAME
-          - name: DB_USER
-            valueFrom:
-              configMapKeyRef:
-                name: app-config
-                key: DB_USER
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: app-db-secret 
-                key: DB_PASSWORD
+              
+              if psql "host=$DB_HOST port=${DB_PORT:-5432} dbname=$DB_NAME user=$DB_USER sslmode=verify-full sslrootcert=/etc/ssl/certs/global-bundle.pem" -c "SELECT version();"; then
+                echo "SUKCES: Pomyślnie połączono z bazą RDS!"
+              else
+                echo "BLAD: Nie udało się połączyć z bazą."
+                exit 1
+              fi
+              
+              echo "Test zakończony pomyślnie. Czekam..."
+              sleep infinity
+          volumeMounts:
+            - name: rds-cert
+              mountPath: /etc/ssl/certs/global-bundle.pem
+              subPath: global-bundle.pem
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-db-secret
+                  key: DB_PASSWORD
+      volumes:
+        - name: rds-cert
+          configMap:
+            name: aws-rds-ca-cert
