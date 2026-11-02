@@ -16,7 +16,8 @@ resource "aws_security_group" "rds" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main.cidr_block, "16.0.0.0/16"] # Allow access from VPC and Tailscale IP
+    cidr_blocks = [aws_vpc.main.cidr_block, "100.64.0.0/10"]
+    security_groups = [aws_security_group.ec2.id]
   }
   
   egress {

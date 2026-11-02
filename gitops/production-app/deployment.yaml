@@ -19,10 +19,16 @@ spec:
         command: ["sh", "-c"]
         args:
           - |
+            echo "Pobieranie certyfikatu RDS CA..."
+            wget -q https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem -O /tmp/global-bundle.pem
+            
             echo "Startowanie testu polaczenia z RDS..."
             while true; do
               export PGPASSWORD=$DB_PASSWORD
-              psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c "SELECT version();" && echo "SUKCES: Polaczono z baza!" || echo "BLAD: Brak polaczenia..."
+              # Używamy pełnego połączenia z szyfrowaniem wymaganym przez AWS
+              psql "host=$DB_HOST port=${DB_PORT:-5432} dbname=$DB_NAME user=$DB_USER sslmode=verify-full sslrootcert=/tmp/global-bundle.pem" -c "SELECT version();" \
+                && echo "SUKCES: Polaczono z baza!" \
+                || echo "BLAD: Brak polaczenia..."
               sleep 10
             done
         env:

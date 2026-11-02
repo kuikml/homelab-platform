@@ -50,13 +50,18 @@ resource "aws_instance" "tailscale_node" {
   subnet_id     = aws_subnet.public_1.id
   vpc_security_group_ids = [aws_security_group.ec2.id]
   associate_public_ip_address = true
+  source_dest_check           = false
 
   user_data = <<-EOF
               #!/bin/bash
+              echo 'net.ipv4.ip_forward = 1' | tee -a /etc/sysctl.d/99-tailscale.conf
+              echo 'net.ipv6.conf.all.forwarding = 1' | tee -a /etc/sysctl.d/99-tailscale.conf
+              sysctl -p /etc/sysctl.d/99-tailscale.conf
+
               apt-get update -y
               apt-get install -y curl
               curl -fsSL https://tailscale.com/install.sh | sh
-              tailscale up --authkey ${var.tailscale_auth_key} --hostname hybrid-homelab-aws
+              tailscale up --authkey ${var.tailscale_auth_key} --hostname hybrid-homelab-aws --advertise-routes=16.0.0.0/16 --accept-dns=false
               EOF
 
   tags = {
