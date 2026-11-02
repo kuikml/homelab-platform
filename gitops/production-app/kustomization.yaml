@@ -14,3 +14,5 @@ configMapGenerator:
   - name: aws-rds-ca-cert
     files:
       - global-bundle.pem
+generatorOptions:
+  disableNameSuffixHash: true
