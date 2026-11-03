@@ -42,7 +42,6 @@ Production-grade, hybrid Kubernetes infrastructure setup running on local Proxmo
 - [x] Custom Workload Deployment
 - [x] NetworkPolicy Isolation & RBAC Setup
 - [x] Terraform IAM & RDS Automation Setup
-- [ ] Full Observability Stack (Prometheus + Grafana + Loki)
-- [ ] Cloudflare Tunnel for Secure Ingress Exposure
+- [x] Full Observability Stack (Prometheus + Grafana + Loki)
 
 
