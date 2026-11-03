@@ -1,0 +1,1 @@
+sudo ip route add 16.0.0.0/16 via <IP_WEWNETRZNE_MASZYNY_Z_TAILSCALE>
