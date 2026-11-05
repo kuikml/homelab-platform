@@ -6,6 +6,21 @@
 ![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC?logo=terraform)
 
 Production-grade, hybrid Kubernetes infrastructure setup running on local Proxmox environment integrated with AWS Cloud Services using GitOps principles.
+---
+
+## 📸 Project Gallery & Validation
+
+### 1. GitOps State (ArgoCD Dashboard)
+All cluster components, ingress controllers, certificate managers, and the monitoring stack managed declaratively through GitOps.
+![ArgoCD Dashboard](docs/screenshots/ArgoCD.png)
+
+### 2. Hybrid Connectivity & RDS Integration
+Validation of successful database connectivity from the K3s cluster over the Tailscale VPN tunnel to AWS RDS.
+![RDS Connection Test](docs/screenshots/AppRDSconnection.png)
+
+### 3. Observability Stack (Grafana)
+Cluster-wide resource utilization and monitoring dashboards powered by Prometheus.
+![Grafana Dashboard](docs/screenshots/Grafana.png)
 
 ## 📋 Architecture Overview
 
