@@ -26,23 +26,23 @@ Cluster-wide resource utilization and monitoring dashboards powered by Prometheu
 
 ```mermaid
 graph TB
-    subgraph Proxmox Homelab
-        subgraph K3s Cluster
+    subgraph Proxmox_Homelab [Proxmox Homelab]
+        subgraph K3s_Cluster [K3s Cluster]
             Argo[ArgoCD GitOps] --> App[Production App]
             App --> ESO[External Secrets Operator]
             Prom[Prometheus & Loki] --> Graf[Grafana UI :30300]
         end
-        Tail[Tailscale Subnet Router]
+        
+        App -->|Traffic to AWS VPC| Tail[Tailscale Subnet Router]
+        ESO -->|API Calls to AWS| Tail
     end
 
     subgraph AWS_Cloud [AWS Cloud Terraform]
-        VPC[AWS VPC] --> RDS[(AWS RDS PostgreSQL)]
+        VPC[AWS VPC] --> RDS[AWS RDS PostgreSQL]
         VPC --> SM[AWS Secrets Manager]
     end
 
-    Tail -.->|Secure VPN Tunnel| VPC
-    ESO -->|Fetch Secrets| SM
-    App -->|Database Traffic| RDS
+    Tail -.->|Secure VPN Tunnel over Internet| VPC
 ```
 
 ### Key Features
