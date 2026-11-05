@@ -43,6 +43,7 @@ graph TB
     Tail -.->|Secure VPN Tunnel| VPC
     ESO -->|Fetch Secrets| SM
     App -->|Database Traffic| RDS
+```
 
 ### Key Features
 - **GitOps Deployment:** Fully automated cluster state management via **ArgoCD**.
