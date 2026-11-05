@@ -24,7 +24,25 @@ Cluster-wide resource utilization and monitoring dashboards powered by Prometheu
 
 ## 📋 Architecture Overview
 
-![Architecture Diagram](docs/architecture-diagram.png)
+```mermaid
+graph TB
+    subgraph Proxmox Homelab
+        subgraph K3s Cluster
+            Argo[ArgoCD GitOps] --> App[Production App]
+            App --> ESO[External Secrets Operator]
+            Prom[Prometheus & Loki] --> Graf[Grafana UI :30300]
+        end
+        Tail[Tailscale Subnet Router]
+    end
+
+    subgraph AWS Cloud (Terraform)
+        VPC[AWS VPC] --> RDS[(AWS RDS PostgreSQL)]
+        VPC --> SM[AWS Secrets Manager]
+    end
+
+    Tail -.->|Secure VPN Tunnel| VPC
+    ESO -->|Fetch Secrets| SM
+    App -->|Database Traffic| RDS
 
 ### Key Features
 - **GitOps Deployment:** Fully automated cluster state management via **ArgoCD**.
