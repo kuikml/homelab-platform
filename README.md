@@ -35,7 +35,7 @@ graph TB
         Tail[Tailscale Subnet Router]
     end
 
-    subgraph AWS Cloud (Terraform)
+    subgraph AWS_Cloud [AWS Cloud Terraform]
         VPC[AWS VPC] --> RDS[(AWS RDS PostgreSQL)]
         VPC --> SM[AWS Secrets Manager]
     end
